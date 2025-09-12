@@ -1,0 +1,49 @@
+# ==========================
+# Python
+# ==========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+env/
+
+# IDE / Editor settings
+.vscode/
+.idea/
+*.swp
+
+# ==========================
+# PyInstaller / Build
+# ==========================
+build/
+dist/
+*.spec
+
+# Executables
+*.exe
+*.dll
+
+# ==========================
+# Logs / Debug
+# ==========================
+*.log
+*.tmp
+
+# ==========================
+# Qt Designer / UI
+# ==========================
+*.pyc
+*.qrc.py
+*.ui.py
+*.bak
+
+# ==========================
+# OS Specific
+# ==========================
+.DS_Store
+Thumbs.db
+desktop.ini
