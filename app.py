@@ -47,7 +47,11 @@ class ZaloMover(QtWidgets.QMainWindow, Ui_MainWindow):
         self.progressBar.setValue(0)
 
         # Set app title
-        self.setWindowTitle("ZaloMove - Developed by Shun")
+        self.setWindowTitle("ZaloMove - Phát triển bởi Shun")
+
+        # ✅ Việt hóa label nút
+        self.browseButton.setText("Chọn thư mục...")
+        self.moveButton.setText("Di chuyển thư mục Zalo")
 
         # ✅ Disable checkbox nếu folder không tồn tại và show size nếu có
         self.check_folders()
@@ -56,7 +60,7 @@ class ZaloMover(QtWidgets.QMainWindow, Ui_MainWindow):
         """Disable checkboxes if default folders don't exist + show size"""
         for name, path in FOLDERS.items():
             size = get_folder_size(path)
-            label = f"{name} ({size} MB)" if size > 0 else f"{name} (Empty/Not Found)"
+            label = f"{name} ({size} MB)" if size > 0 else f"{name} (Trống/Không tìm thấy)"
             if name == "Zalo":
                 self.checkZalo.setText(label)
                 self.checkZalo.setEnabled(os.path.exists(path))
@@ -69,7 +73,7 @@ class ZaloMover(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def choose_folder(self):
         """Open folder chooser dialog"""
-        folder = QtWidgets.QFileDialog.getExistingDirectory(self, "Select New Folder Location")
+        folder = QtWidgets.QFileDialog.getExistingDirectory(self, "Chọn thư mục đích mới")
         if folder:
             self.newPath.setText(folder)
 
@@ -100,18 +104,18 @@ class ZaloMover(QtWidgets.QMainWindow, Ui_MainWindow):
         user_base = self.newPath.text().strip()
 
         if not user_base:
-            QtWidgets.QMessageBox.warning(self, "Warning", "Please select a destination folder first.")
+            QtWidgets.QMessageBox.warning(self, "Cảnh báo", "Vui lòng chọn thư mục đích trước.")
             return
 
         # 🔒 Disable nút move để tránh bấm nhiều lần
         self.moveButton.setEnabled(False)
-        self.moveButton.setText("Processing...")
+        self.moveButton.setText("Đang xử lý...")
 
         try:
             # Nếu Zalo đang chạy → tự kill
             if self.is_zalo_running():
                 killed = self.kill_zalo()
-                QtWidgets.QMessageBox.information(self, "Info", f"Zalo is closing, please wait {killed}... ")
+                QtWidgets.QMessageBox.information(self, "Thông báo", f"Đang đóng Zalo, vui lòng chờ... ({killed} tiến trình)")
 
             # ✅ Always create 'ZaloMove' inside the chosen folder
             new_base = os.path.join(user_base, "ZaloMove")
@@ -127,7 +131,7 @@ class ZaloMover(QtWidgets.QMainWindow, Ui_MainWindow):
                 selected.append("ZaloData")
 
             if not selected:
-                QtWidgets.QMessageBox.warning(self, "Warning", "Please select at least one valid folder.")
+                QtWidgets.QMessageBox.warning(self, "Cảnh báo", "Vui lòng chọn ít nhất một thư mục hợp lệ.")
                 return
 
             total = len(selected)
@@ -144,8 +148,8 @@ class ZaloMover(QtWidgets.QMainWindow, Ui_MainWindow):
                 if os.path.exists(new_path):
                     reply = QtWidgets.QMessageBox.question(
                         self,
-                        "Folder Exists",
-                        f"{new_path} already exists. Overwrite?",
+                        "Thư mục đã tồn tại",
+                        f"{new_path} đã tồn tại. Bạn có muốn ghi đè không?",
                         QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                         QtWidgets.QMessageBox.No
                     )
@@ -154,7 +158,7 @@ class ZaloMover(QtWidgets.QMainWindow, Ui_MainWindow):
                     shutil.rmtree(new_path, ignore_errors=True)
 
                 if not os.path.exists(old_path):
-                    errors.append(f"{name} not found at {old_path}")
+                    errors.append(f"{name} không tìm thấy tại {old_path}")
                 else:
                     try:
                         # Move folder
@@ -165,21 +169,22 @@ class ZaloMover(QtWidgets.QMainWindow, Ui_MainWindow):
                                     shell=True, check=True)
 
                     except Exception as e:
-                        errors.append(f"Failed to move {name}: {e}")
+                        errors.append(f"Lỗi khi di chuyển {name}: {e}")
 
                 # Update progress bar
                 self.progressBar.setValue(i)
                 QtWidgets.QApplication.processEvents()
 
             if errors:
-                QtWidgets.QMessageBox.critical(self, "Result", "\n".join(errors))
+                QtWidgets.QMessageBox.critical(self, "Kết quả", "\n".join(errors))
             else:
-                QtWidgets.QMessageBox.information(self, "Success", f"Moved: {', '.join(selected)}")
+                QtWidgets.QMessageBox.information(self, "Thành công", f"Đã di chuyển: {', '.join(selected)}")
 
         finally:
             # 🔓 Enable lại nút move khi xong
             self.moveButton.setEnabled(True)
-            self.moveButton.setText("Move Zalo Folder")
+            self.moveButton.setText("Di chuyển thư mục Zalo")
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

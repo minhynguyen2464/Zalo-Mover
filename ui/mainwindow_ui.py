@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'mainwindow.ui'
+# Form implementation generated from reading ui file 'd:\Vscode\Zalo-Mover\ui\mainwindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -104,13 +104,3 @@ class Ui_MainWindow(object):
         self.checkZaloData.setText(_translate("MainWindow", "ZaloData"))
         self.checkZaloPC.setText(_translate("MainWindow", "ZaloPC"))
         self.label_2.setText(_translate("MainWindow", "<html><head/><body><p>ZaloMove - Phát triển bởi <span style=\" color:#ff0000;\">Minh Ý</span></p></body></html>"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())

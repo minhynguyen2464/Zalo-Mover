@@ -21,26 +21,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0" colspan="4">
-     <widget class="QLabel" name="label_2">
-      <property name="font">
-       <font>
-        <pointsize>11</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>ZaloMove 1.0 - Developed by Shun</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="indent">
-       <number>-1</number>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label">
       <property name="font">
@@ -49,7 +29,7 @@
        </font>
       </property>
       <property name="text">
-       <string>New Folder Location</string>
+       <string>Chọn thư mục mới:</string>
       </property>
      </widget>
     </item>
@@ -87,7 +67,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Select folder you want to move:</string>
+       <string>Chọn thư mục mà bạn muốn di chuyển:</string>
       </property>
       <property name="wordWrap">
        <bool>false</bool>
@@ -145,6 +125,30 @@
       </property>
       <property name="text">
        <string>ZaloPC</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" colspan="4">
+     <widget class="QLabel" name="label_2">
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ZaloMove - Phát triển bởi &lt;span style=&quot; color:#ff0000;&quot;&gt;Minh Ý&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::AutoText</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="indent">
+       <number>-1</number>
       </property>
      </widget>
     </item>
