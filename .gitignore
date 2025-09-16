@@ -40,6 +40,7 @@ dist/
 *.qrc.py
 *.ui.py
 *.bak
+*.ico
 
 # ==========================
 # OS Specific
@@ -47,3 +48,4 @@ dist/
 .DS_Store
 Thumbs.db
 desktop.ini
+

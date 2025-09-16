@@ -3,6 +3,7 @@ import shutil
 import subprocess
 import os
 import psutil
+import ctypes
 from PyQt5 import QtWidgets
 from ui.mainwindow import Ui_MainWindow   # file UI export từ Qt Designer
 
@@ -15,6 +16,7 @@ FOLDERS = {
     "Zalo":    os.path.join(HOME, "AppData", "Local", "Programs", "Zalo"),
     "ZaloPC":  os.path.join(HOME, "AppData", "Local", "ZaloPC"),
     "ZaloData": os.path.join(HOME, "AppData", "Roaming", "ZaloData"),
+    "ZaloUpdate":  os.path.join(HOME, "AppData", "Local", "zalo-updater"),   # ✅ mới thêm
 }
 
 
@@ -33,6 +35,15 @@ def get_folder_size(path):
                 pass
     return round(total_size / (1024 * 1024), 2)
 
+def is_junction(path):
+    """Check if a folder is a junction/symlink in Windows"""
+    if not os.path.exists(path):
+        return False
+    attrs = ctypes.windll.kernel32.GetFileAttributesW(str(path))
+    if attrs == -1:
+        return False
+    # 0x400 = FILE_ATTRIBUTE_REPARSE_POINT
+    return bool(attrs & 0x400)
 
 class ZaloMover(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -57,19 +68,25 @@ class ZaloMover(QtWidgets.QMainWindow, Ui_MainWindow):
         self.check_folders()
 
     def check_folders(self):
-        """Disable checkboxes if default folders don't exist + show size"""
+        """Disable checkboxes if folder không tồn tại hoặc đã là symbolic link"""
         for name, path in FOLDERS.items():
             size = get_folder_size(path)
-            label = f"{name} ({size} MB)" if size > 0 else f"{name} (Trống/Không tìm thấy)"
+            label = f"{name} ({size} MB)" if size > 0 else f"{name} (Not Found)"
+
+            disabled = (not os.path.exists(path)) or is_junction(path)
+
             if name == "Zalo":
                 self.checkZalo.setText(label)
-                self.checkZalo.setEnabled(os.path.exists(path))
+                self.checkZalo.setEnabled(not disabled)
             elif name == "ZaloPC":
                 self.checkZaloPC.setText(label)
-                self.checkZaloPC.setEnabled(os.path.exists(path))
+                self.checkZaloPC.setEnabled(not disabled)
             elif name == "ZaloData":
                 self.checkZaloData.setText(label)
-                self.checkZaloData.setEnabled(os.path.exists(path))
+                self.checkZaloData.setEnabled(not disabled)
+            elif name == "ZaloUpdate":   # ✅ xử lý thêm checkbox mới
+                self.checkZaloUpdate.setText(label)
+                self.checkZaloUpdate.setEnabled(not disabled)
 
     def choose_folder(self):
         """Open folder chooser dialog"""
@@ -129,6 +146,8 @@ class ZaloMover(QtWidgets.QMainWindow, Ui_MainWindow):
                 selected.append("ZaloPC")
             if self.checkZaloData.isChecked() and self.checkZaloData.isEnabled():
                 selected.append("ZaloData")
+            if self.checkZaloUpdate.isChecked() and self.checkZaloUpdate.isEnabled():   # ✅ mới thêm
+                selected.append("ZaloUpdate")
 
             if not selected:
                 QtWidgets.QMessageBox.warning(self, "Cảnh báo", "Vui lòng chọn ít nhất một thư mục hợp lệ.")

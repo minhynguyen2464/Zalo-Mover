@@ -33,29 +33,22 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="0" colspan="2">
+    <item row="13" column="0" colspan="2">
      <widget class="QPushButton" name="browseButton">
       <property name="text">
        <string>Browse</string>
       </property>
      </widget>
     </item>
-    <item row="5" column="0" colspan="4">
+    <item row="1" column="1" colspan="3">
+     <widget class="QLineEdit" name="newPath"/>
+    </item>
+    <item row="14" column="0" colspan="4">
      <widget class="QProgressBar" name="progressBar">
       <property name="value">
        <number>0</number>
       </property>
      </widget>
-    </item>
-    <item row="4" column="2" colspan="2">
-     <widget class="QPushButton" name="moveButton">
-      <property name="text">
-       <string>Move Zalo Folder</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1" colspan="3">
-     <widget class="QLineEdit" name="newPath"/>
     </item>
     <item row="2" column="0" colspan="2">
      <widget class="QLabel" name="label_3">
@@ -74,57 +67,10 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="0">
-     <widget class="QCheckBox" name="checkZalo">
-      <property name="minimumSize">
-       <size>
-        <width>97</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
+    <item row="13" column="2" colspan="2">
+     <widget class="QPushButton" name="moveButton">
       <property name="text">
-       <string>Zalo</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="3">
-     <widget class="QCheckBox" name="checkZaloData">
-      <property name="minimumSize">
-       <size>
-        <width>66</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>ZaloData</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1" colspan="2">
-     <widget class="QCheckBox" name="checkZaloPC">
-      <property name="minimumSize">
-       <size>
-        <width>174</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>ZaloPC</string>
+       <string>Move Zalo Folder</string>
       </property>
      </widget>
     </item>
@@ -149,6 +95,73 @@
       </property>
       <property name="indent">
        <number>-1</number>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2" alignment="Qt::AlignHCenter">
+     <widget class="QCheckBox" name="checkZaloPC">
+      <property name="minimumSize">
+       <size>
+        <width>174</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>ZaloPC</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QCheckBox" name="checkZalo">
+      <property name="minimumSize">
+       <size>
+        <width>97</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Zalo</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="2">
+     <widget class="QCheckBox" name="checkZaloUpdate">
+      <property name="minimumSize">
+       <size>
+        <width>92</width>
+        <height>17</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>zalo-updater</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QCheckBox" name="checkZaloData">
+      <property name="minimumSize">
+       <size>
+        <width>91</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>ZaloData</string>
       </property>
      </widget>
     </item>
