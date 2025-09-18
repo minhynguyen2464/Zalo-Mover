@@ -53,6 +53,7 @@ class ZaloMover(QtWidgets.QMainWindow, Ui_MainWindow):
         # Connect buttons
         self.browseButton.clicked.connect(self.choose_folder)
         self.moveButton.clicked.connect(self.move_selected)
+        self.deleteButton.clicked.connect(self.delete_old_backups)
 
         # Reset progress bar
         self.progressBar.setValue(0)
@@ -132,7 +133,7 @@ class ZaloMover(QtWidgets.QMainWindow, Ui_MainWindow):
             # Nếu Zalo đang chạy → tự kill
             if self.is_zalo_running():
                 killed = self.kill_zalo()
-                QtWidgets.QMessageBox.information(self, "Thông báo", f"Đang đóng Zalo, vui lòng chờ... ({killed} tiến trình)")
+                QtWidgets.QMessageBox.information(self, "Thông báo", f"Zalo đang bị đóng để di chuyển, nhấn OK để tiếp tục")
 
             # ✅ Always create 'ZaloMove' inside the chosen folder
             new_base = os.path.join(user_base, "ZaloMove")
@@ -180,6 +181,23 @@ class ZaloMover(QtWidgets.QMainWindow, Ui_MainWindow):
                     errors.append(f"{name} không tìm thấy tại {old_path}")
                 else:
                     try:
+                        # Tạo bản sao lưu trước khi di chuyển: <folder>.old
+                        backup_path = f"{old_path}.old"
+                        if os.path.exists(backup_path):
+                            reply_backup = QtWidgets.QMessageBox.question(
+                                self,
+                                "Backup đã tồn tại",
+                                f"Đã có bản sao lưu: {backup_path}. Bạn có muốn ghi đè không?",
+                                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                QtWidgets.QMessageBox.No
+                            )
+                            if reply_backup == QtWidgets.QMessageBox.No:
+                                # Bỏ qua thư mục này nếu không muốn ghi đè backup
+                                continue
+                            shutil.rmtree(backup_path, ignore_errors=True)
+
+                        shutil.copytree(old_path, backup_path)
+
                         # Move folder
                         shutil.move(old_path, new_path)
 
@@ -188,7 +206,7 @@ class ZaloMover(QtWidgets.QMainWindow, Ui_MainWindow):
                                     shell=True, check=True)
 
                     except Exception as e:
-                        errors.append(f"Lỗi khi di chuyển {name}: {e}")
+                        errors.append(f"Lỗi khi xử lý {name}: {e}")
 
                 # Update progress bar
                 self.progressBar.setValue(i)
@@ -203,6 +221,45 @@ class ZaloMover(QtWidgets.QMainWindow, Ui_MainWindow):
             # 🔓 Enable lại nút move khi xong
             self.moveButton.setEnabled(True)
             self.moveButton.setText("Di chuyển thư mục Zalo")
+
+    def delete_old_backups(self):
+        """Xóa các thư mục backup (*.old) nếu tồn tại"""
+        # Tìm tất cả backup tồn tại
+        backups = []
+        for name, path in FOLDERS.items():
+            backup_path = f"{path}.old"
+            if os.path.exists(backup_path):
+                backups.append((name, backup_path))
+
+        if not backups:
+            QtWidgets.QMessageBox.information(self, "Thông báo", "Không tìm thấy thư mục backup (.old) nào để xóa.")
+            return
+
+        # Hỏi xác nhận
+        backup_list_text = "\n".join([bp for _, bp in backups])
+        reply = QtWidgets.QMessageBox.question(
+            self,
+            "Xác nhận xóa backup",
+            f"Bạn có chắc chắn muốn xóa các thư mục backup sau?\n\n{backup_list_text}",
+            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+            QtWidgets.QMessageBox.No
+        )
+        if reply == QtWidgets.QMessageBox.No:
+            return
+
+        errors = []
+        deleted = []
+        for name, backup_path in backups:
+            try:
+                shutil.rmtree(backup_path, ignore_errors=False)
+                deleted.append(name)
+            except Exception as e:
+                errors.append(f"Lỗi khi xóa backup {name}: {e}")
+
+        if errors:
+            QtWidgets.QMessageBox.critical(self, "Kết quả", "\n".join(errors))
+        else:
+            QtWidgets.QMessageBox.information(self, "Thành công", f"Đã xóa backup: {', '.join(deleted)}")
 
 
 if __name__ == "__main__":

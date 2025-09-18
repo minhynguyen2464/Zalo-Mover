@@ -34,6 +34,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.5.0] - 2025-09-18
+
+### Added
+
+- Create safety backup before moving: duplicate selected folders as `<Folder>.old` and only proceed if backup succeeds.
+- Add `Delete backups` button to remove existing `.old` folders when users confirm the app works fine.
+- Support moving the `ZaloUpdate` folder and linking it back with a junction.
+
+### Changed
+
+- Updated confirmation message when closing running Zalo processes to be clearer before continuing.
+
+### Reliability
+
+- Overwrite confirmations when destination or backup already exists to avoid accidental data loss.
+
+---
+
 ## [Unreleased]
 
 ### Planned
